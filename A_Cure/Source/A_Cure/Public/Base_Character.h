@@ -6,10 +6,23 @@
 #include "GameFramework/Character.h"
 #include "Base_Character.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class A_CURE_API ABase_Character : public ACharacter
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	USpringArmComponent *CameraArm;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UCameraComponent *Camera;
+
+	bool bIsInLockMode;
 
 public:
 	// Sets default values for this character's properties
@@ -18,6 +31,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void MoveForward(float value);
+
+	void MoveRight(float value);
 
 public:	
 	// Called every frame
