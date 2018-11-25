@@ -13,3 +13,4 @@ with a low poly art style.
 
 * Unreal Project Created
 * Updated ReadMe File
+* Basic Engine Setup + Import Placeholder Character
