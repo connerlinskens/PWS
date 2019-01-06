@@ -16,3 +16,4 @@ with a low poly art style.
 * Basic Engine Setup + Import Placeholder Character
 * Base_Character Class Created
 * Basic Movement Added
+* Added Jump

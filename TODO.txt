@@ -1,0 +1,3 @@
+- Lock-on System
+- Basic enemy class
+- Attack 
