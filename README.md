@@ -9,7 +9,7 @@ It is played in a third-person perspective
 with a low poly art style.
 
 
-### Commits
+## Commits
 
 * Unreal Project Created
 * Updated ReadMe File
@@ -17,3 +17,4 @@ with a low poly art style.
 * Base_Character Class Created
 * Basic Movement Added
 * Added Jump
+* Base_Enemy Class Created
