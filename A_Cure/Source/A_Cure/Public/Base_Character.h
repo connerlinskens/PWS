@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UStats_Component;
 
 UCLASS()
 class A_CURE_API ABase_Character : public ACharacter
@@ -22,11 +23,20 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UCameraComponent *Camera;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStats_Component *StatsComponent;
+
 	bool bIsInLockMode;
+
+	UPROPERTY(EditDefaultsOnly, Category="Stats")
+	TSubclassOf<UDamageType> NormalDamageType;
 
 public:
 	// Sets default values for this character's properties
 	ABase_Character();
+
+	UFUNCTION(BlueprintCallable, Category="Stats")
+	UStats_Component *GetStats();
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,6 +45,11 @@ protected:
 	void MoveForward(float value);
 
 	void MoveRight(float value);
+
+	void Damage();
+
+	UFUNCTION()
+	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 public:	
 	// Called every frame

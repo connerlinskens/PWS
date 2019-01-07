@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/Controller.h"
+#include "Public/Stats_Component.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABase_Character::ABase_Character()
@@ -37,9 +39,11 @@ ABase_Character::ABase_Character()
 	Camera->SetupAttachment(CameraArm);
 	Camera->bUsePawnControlRotation = false;
 
+	StatsComponent = CreateDefaultSubobject<UStats_Component>(TEXT("Stats"));
+
+	// Defaults
 	bIsInLockMode = false;
 }
-
 
 // Called to bind functionality to input
 void ABase_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -56,14 +60,19 @@ void ABase_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Character::Damage);
 }
 
+// Getters
+UStats_Component *ABase_Character::GetStats() { return StatsComponent; }
 
 // Called when the game starts or when spawned
 void ABase_Character::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	StatsComponent->OnDamageTaken.AddDynamic(this, &ABase_Character::OnDamageTaken);
 }
 
 void ABase_Character::MoveForward(float value)
@@ -105,4 +114,16 @@ void ABase_Character::Tick(float DeltaTime)
 
 }
 
+void ABase_Character::Damage()
+{
+	UGameplayStatics::ApplyDamage(this, StatsComponent->GetAttackDamage(), GetInstigatorController(), this, NormalDamageType);
+}
 
+void ABase_Character::OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Health <= 0.f)
+	{
+		// Die!
+		UE_LOG(LogTemp, Warning, TEXT("This man is no longer living on this planet."));
+	}
+}
