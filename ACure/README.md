@@ -19,3 +19,4 @@ with a low poly art style.
 * Added Jump
 * Base_Enemy Class Created
 * Stats Comp added and Damage System now working
+* Added First Person Character and dash mechanic
