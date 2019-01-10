@@ -3,7 +3,7 @@
 #include "Public/Enemies/Base_AIController.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "Public/Base_Character.h"
+#include "GameFramework/Character.h"
 
 ABase_AIController::ABase_AIController()
 {
@@ -14,7 +14,7 @@ void ABase_AIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	player = Cast<ABase_Character>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+	player = GetWorld()->GetFirstPlayerController()->GetCharacter();
 }
 
 void ABase_AIController::Tick(float DeltaTime)

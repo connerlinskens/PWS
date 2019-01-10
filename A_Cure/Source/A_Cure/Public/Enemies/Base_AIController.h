@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Base_AIController.generated.h"
 
-class ABase_Character;
+class ACharacter;
 
 /**
  * 
@@ -26,5 +26,5 @@ protected:
 	void MoveToPlayer();
 	
 protected:
-	ABase_Character *player;
+	ACharacter *player;
 };

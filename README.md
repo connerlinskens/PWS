@@ -20,3 +20,4 @@ with a low poly art style.
 * Base_Enemy Class Created
 * Stats Comp added and Damage System now working
 * Added First Person Character and dash mechanic
+* Fixed Crash

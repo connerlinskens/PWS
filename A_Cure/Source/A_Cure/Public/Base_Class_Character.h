@@ -7,6 +7,7 @@
 #include "Base_Class_Character.generated.h"
 
 class UCameraComponent;
+class UStats_Component;
 
 UCLASS()
 class A_CURE_API ABase_Class_Character : public ACharacter
@@ -17,12 +18,23 @@ public:
 	// Sets default values for this character's properties
 	ABase_Class_Character();
 
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	UStats_Component *GetStats();
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UCameraComponent *Camera;
+	UCameraComponent *Camera;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStats_Component *Stats;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-		float DashSpeed;
+	float DashSpeed;
+
+	bool Dashed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<UDamageType> NormalDamageType;
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,6 +44,11 @@ protected:
 	void MoveRight(float value);
 
 	void Dash();
+
+	void Damage();
+
+	UFUNCTION()
+	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 public:
 	// Called every frame
