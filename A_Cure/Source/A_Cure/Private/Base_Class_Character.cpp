@@ -10,6 +10,7 @@
 #include "Public/Stats_Component.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
+#include "TimerManager.h"
 
 // Sets default values
 ABase_Class_Character::ABase_Class_Character()
@@ -28,7 +29,7 @@ ABase_Class_Character::ABase_Class_Character()
 	// Defaults
 	DashSpeed = 200.f;
 	Dashed = false;
-<<<<<<< HEAD:A_Cure/Source/A_Cure/Private/Base_Class_Character.cpp
+	DashDelay = 3.f;
 }
 
 // Called to bind functionality to input
@@ -47,27 +48,7 @@ void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
 }
 
-=======
-}
-
-// Called to bind functionality to input
-void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ABase_Class_Character::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ABase_Class_Character::MoveRight);
-
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-
-	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABase_Class_Character::Dash);
-
-	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
-}
-
->>>>>>> f872e115e57be17897e18b04b37a99dab8422858:A_Cure/Source/A_Cure/Private/Base_Class_Character.cpp
-// Getters
+// Getters ans Setters
 UStats_Component *ABase_Class_Character::GetStats() { return Stats; }
 
 // Called when the game starts or when spawned
@@ -105,6 +86,9 @@ void ABase_Class_Character::Dash()
 		LaunchVelocity *= DashSpeed;
 
 		LaunchCharacter(LaunchVelocity, false, false);
+
+		Dashed = true;
+		GetWorld()->GetTimerManager().SetTimer(DashTimerHandle, this, &ABase_Class_Character::SetDashFalse, DashDelay, false);
 	}
 }
 
@@ -120,4 +104,9 @@ void ABase_Class_Character::OnDamageTaken(UStats_Component* OwningStatsComp, flo
 		// Die!
 		UE_LOG(LogTemp, Warning, TEXT("This man is no longer living on this planet."));
 	}
+}
+
+void ABase_Class_Character::SetDashFalse()
+{
+	Dashed = false;
 }

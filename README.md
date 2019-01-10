@@ -22,3 +22,4 @@ with a low poly art style.
 * Added First Person Character and dash mechanic
 * Fixed Crash
 * Fixed Commit
+* Dash Delay Added
