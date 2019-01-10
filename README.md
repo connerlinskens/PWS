@@ -21,3 +21,4 @@ with a low poly art style.
 * Stats Comp added and Damage System now working
 * Added First Person Character and dash mechanic
 * Fixed Crash
+* Fixed Commit

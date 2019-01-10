@@ -28,6 +28,7 @@ ABase_Class_Character::ABase_Class_Character()
 	// Defaults
 	DashSpeed = 200.f;
 	Dashed = false;
+<<<<<<< HEAD:A_Cure/Source/A_Cure/Private/Base_Class_Character.cpp
 }
 
 // Called to bind functionality to input
@@ -46,6 +47,26 @@ void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
 }
 
+=======
+}
+
+// Called to bind functionality to input
+void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ABase_Class_Character::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ABase_Class_Character::MoveRight);
+
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABase_Class_Character::Dash);
+
+	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
+}
+
+>>>>>>> f872e115e57be17897e18b04b37a99dab8422858:A_Cure/Source/A_Cure/Private/Base_Class_Character.cpp
 // Getters
 UStats_Component *ABase_Class_Character::GetStats() { return Stats; }
 
