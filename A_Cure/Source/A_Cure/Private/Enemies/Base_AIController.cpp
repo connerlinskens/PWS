@@ -7,10 +7,15 @@
 #include "Public/Enemies/Base_Enemy.h"
 #include "Components/SphereComponent.h"
 #include "Public/Base_Class_Character.h"
+#include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
+#include "Public/Stats_Component.h"
 
 ABase_AIController::ABase_AIController()
 {
 	player = nullptr;
+	Attacked = false;
 }
 
 void ABase_AIController::BeginPlay()
@@ -38,6 +43,7 @@ void ABase_AIController::Tick(float DeltaTime)
 		{
 			StopMovement();
 			
+
 			AttackPlayer();
 		}
 	}
@@ -50,5 +56,25 @@ void ABase_AIController::MoveToPlayer()
 
 void ABase_AIController::AttackPlayer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attack!"));
+	if (!Attacked)
+	{
+		ownCharacter->GetAttackBox()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+		ownCharacter->GetAttackBox()->GetOverlappingActors(AttackingActors, CharacterClass);
+
+		for (int x = 0; x < AttackingActors.Num(); x++)
+		{
+			if (Cast<ABase_Class_Character>(AttackingActors[x]))
+			{
+				Attacked = true;
+				UGameplayStatics::ApplyDamage(player, ownCharacter->GetStats()->GetAttackDamage(), GetInstigatorController(), this, ownCharacter->GetDamageType());
+				GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, this, &ABase_AIController::ResetAttack, ownCharacter->GetAttackSpeed(), false);
+			}
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Attack!"));
+	}
+}
+
+void ABase_AIController::ResetAttack()
+{
+	Attacked = false;
 }

@@ -18,6 +18,7 @@ ABase_Enemy::ABase_Enemy()
 	MovementComp = GetCharacterMovement();
 	MovementSpeed = 250.0f;
 	AttackRange = 150.f;
+	AttackSpeed = 2.0f;
 
 	// Setting op the hitbox
 	hitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
@@ -29,6 +30,11 @@ ABase_Enemy::ABase_Enemy()
 
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats Component"));
 
+	AttackBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Attack box"));
+	AttackBox->SetupAttachment(RootComponent);
+	AttackBox->InitBoxExtent(FVector(70.f));
+	AttackBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
 	// Let the pawn get auto possessed by an AI controller
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -36,7 +42,10 @@ ABase_Enemy::ABase_Enemy()
 
 // Getters
 USphereComponent *ABase_Enemy::GetAttackSphere() { return AttackSphere; }
-
+float ABase_Enemy::GetAttackSpeed() { return AttackSpeed; }
+UBoxComponent *ABase_Enemy::GetAttackBox() { return AttackBox; }
+UStats_Component *ABase_Enemy::GetStats() { return Stats; }
+TSubclassOf<UDamageType> ABase_Enemy::GetDamageType() { return NormalDamageType; }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()

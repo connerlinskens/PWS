@@ -37,26 +37,22 @@ void UStats_Component::BeginPlay()
 	{
 		MyOwner->OnTakeAnyDamage.AddDynamic(this, &UStats_Component::HandleTakeAnyDamage);
 	}
-	
 }
 
 void UStats_Component::HandleTakeAnyDamage(AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser)
 {
-	if (Damage <= 0.0f)
+	float ActualDamage = Damage;
+	ActualDamage -= Armor;
+
+	if (ActualDamage <= 0.0f)
 	{
 		return;
 	}
 
-	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
+	CurrentHealth = FMath::Clamp(CurrentHealth - ActualDamage, 0.0f, MaxHealth);
 
-	UE_LOG(LogTemp, Warning, TEXT("Health Changed by: %s, is now: %s"), *FString::SanitizeFloat(Damage), *FString::SanitizeFloat(CurrentHealth));
+	UE_LOG(LogTemp, Warning, TEXT("Health Changed by: %s, is now: %s"), *FString::SanitizeFloat(ActualDamage), *FString::SanitizeFloat(CurrentHealth));
 
-	OnDamageTaken.Broadcast(this, CurrentHealth, Damage, DamageType, InstigatedBy, DamageCauser);
-}
-
-void UStats_Component::Damage(float DamageTaken)
-{
-	if(CurrentHealth > 0)
-		CurrentHealth -= DamageTaken;
+	OnDamageTaken.Broadcast(this, CurrentHealth, ActualDamage, DamageType, InstigatedBy, DamageCauser);
 }
 

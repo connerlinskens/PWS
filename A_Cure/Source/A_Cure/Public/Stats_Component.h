@@ -28,8 +28,6 @@ public:
 	float GetAttackDamage();
 	float GetAbilityDamage();
 
-	void Damage(float DamageTaken);
-
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Stats")
 	float MaxHealth;

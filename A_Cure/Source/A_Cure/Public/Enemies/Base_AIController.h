@@ -28,6 +28,8 @@ protected:
 	void MoveToPlayer();
 
 	void AttackPlayer();
+
+	void ResetAttack();
 	
 protected:
 	ACharacter *player;
@@ -36,6 +38,12 @@ protected:
 
 	TArray<AActor*> OverlappingActors;
 
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TArray<AActor*> AttackingActors;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	TSubclassOf<AActor> CharacterClass;
+
+	FTimerHandle AttackTimerHandle;
+
+	bool Attacked;
 };

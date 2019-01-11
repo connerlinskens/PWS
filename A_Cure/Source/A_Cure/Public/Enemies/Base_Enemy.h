@@ -40,6 +40,15 @@ protected:
 
 	float MovementSpeed;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	float AttackSpeed;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UBoxComponent *AttackBox;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<UDamageType> NormalDamageType;
+
 private:
 	UFUNCTION()
 	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
@@ -48,6 +57,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Getters
 	USphereComponent *GetAttackSphere();
+	float GetAttackSpeed();
+	UBoxComponent *GetAttackBox();
+	UStats_Component *GetStats();
+	TSubclassOf<UDamageType> GetDamageType();
 
 };
