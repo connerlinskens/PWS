@@ -7,6 +7,8 @@
 #include "Base_Enemy.generated.h"
 
 class UBoxComponent;
+class USphereComponent;
+class UStats_Component;
 
 UCLASS()
 class A_CURE_API ABase_Enemy : public ACharacter
@@ -24,16 +26,28 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent *hitCollider;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	USphereComponent *AttackSphere;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	float AttackRange;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStats_Component *Stats;
+
 	UCapsuleComponent *collider;
 	UCharacterMovementComponent *MovementComp;
 
 	float MovementSpeed;
 
+private:
+	UFUNCTION()
+	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	USphereComponent *GetAttackSphere();
 
 };

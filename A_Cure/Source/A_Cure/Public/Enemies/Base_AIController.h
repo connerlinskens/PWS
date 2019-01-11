@@ -7,6 +7,8 @@
 #include "Base_AIController.generated.h"
 
 class ACharacter;
+class ABase_Enemy;
+class ABase_Class_Character;
 
 /**
  * 
@@ -24,7 +26,16 @@ protected:
 	virtual void BeginPlay() override;
 
 	void MoveToPlayer();
+
+	void AttackPlayer();
 	
 protected:
 	ACharacter *player;
+
+	ABase_Enemy *ownCharacter;
+
+	TArray<AActor*> OverlappingActors;
+
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TSubclassOf<AActor> CharacterClass;
 };

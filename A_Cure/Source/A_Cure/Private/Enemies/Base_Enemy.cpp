@@ -3,7 +3,9 @@
 #include "public/Enemies/Base_Enemy.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Public/Stats_Component.h"
 
 // Sets default values
 ABase_Enemy::ABase_Enemy()
@@ -11,23 +13,38 @@ ABase_Enemy::ABase_Enemy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Setting op the hitbox
-	hitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
-
-	// Let the pawn get auto possessed by an AI controller
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
 	// Setting the defaults values of the variables
 	collider = GetCapsuleComponent();
 	MovementComp = GetCharacterMovement();
 	MovementSpeed = 250.0f;
+	AttackRange = 150.f;
+
+	// Setting op the hitbox
+	hitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
+	hitCollider->SetupAttachment(RootComponent);
+
+	AttackSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Attack Range"));
+	AttackSphere->SetupAttachment(RootComponent);
+	AttackSphere->SetSphereRadius(AttackRange);
+
+	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats Component"));
+
+	// Let the pawn get auto possessed by an AI controller
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
 }
+
+// Getters
+USphereComponent *ABase_Enemy::GetAttackSphere() { return AttackSphere; }
+
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Stats->OnDamageTaken.AddDynamic(this, &ABase_Enemy::OnDamageTaken);
+
 	MovementComp->MaxWalkSpeed = MovementSpeed;
 }
 
@@ -38,10 +55,11 @@ void ABase_Enemy::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void ABase_Enemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ABase_Enemy::OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	if (Health <= 0.f)
+	{
+		// Die!
+		UE_LOG(LogTemp, Warning, TEXT("Die!"));
+	}
 }
-

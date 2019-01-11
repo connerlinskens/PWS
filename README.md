@@ -23,3 +23,4 @@ with a low poly art style.
 * Fixed Crash
 * Fixed Commit
 * Dash Delay Added
+* Upgraded Enemy code
