@@ -26,3 +26,4 @@ with a low poly art style.
 * Upgraded Enemy code
 * Enemies base attack added
 * Added Knockback
+* Imported bow mesh and created weapon class
