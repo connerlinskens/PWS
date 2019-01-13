@@ -4,5 +4,5 @@
 
 ABow::ABow()
 {
-
+	weaponType = WeaponType::Ranged;
 }

@@ -31,10 +31,15 @@ ABase_Class_Character::ABase_Class_Character()
 
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats"));
 
+	//WeaponPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Point"));
+	//WeaponPoint->SetupAttachment(RootComponent);
+
 	// Defaults
 	DashSpeed = 200.f;
 	Dashed = false;
 	DashDelay = 3.f;
+	Zoom = false;
+	ZoomSpeed = 3.f;
 }
 
 // Called to bind functionality to input
@@ -51,6 +56,9 @@ void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABase_Class_Character::Dash);
 
 	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
+
+	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ABase_Class_Character::ZoomIn);
+	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ABase_Class_Character::ZoomOut);
 }
 
 // Getters ans Setters
@@ -69,8 +77,12 @@ void ABase_Class_Character::BeginPlay()
 		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		FAttachmentTransformRules attachRules(EAttachmentRule::SnapToTarget, false);
 		Weapon = GetWorld()->SpawnActor<ABase_Weapon>(ClassWeapon, spawnParams);
+		//Weapon->AttachToComponent(WeaponPoint, attachRules);
 		Weapon->AttachToComponent(Arms, attachRules, WeaponSocketName);
+		
 	}
+
+	NormalPOV = Camera->FieldOfView;
 }
 
 // Called every frame
@@ -78,6 +90,14 @@ void ABase_Class_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (Zoom)
+	{
+		Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, ZoomedPOV, DeltaTime, ZoomSpeed));
+	}
+	else
+	{
+		Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, NormalPOV, DeltaTime, ZoomSpeed));
+	}
 }
 
 
@@ -124,4 +144,14 @@ void ABase_Class_Character::OnDamageTaken(UStats_Component* OwningStatsComp, flo
 void ABase_Class_Character::SetDashFalse()
 {
 	Dashed = false;
+}
+
+void ABase_Class_Character::ZoomIn()
+{
+	Zoom = true;
+}
+
+void ABase_Class_Character::ZoomOut()
+{
+	Zoom = false;
 }

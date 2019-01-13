@@ -54,6 +54,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponSocketName;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float ZoomedPOV;
+
+	float NormalPOV;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float ZoomSpeed;
+
+	//UPROPERTY(VisibelAnywhere, Category = "Components")
+	//USceneComponent *WeaponPoint;
+
+	bool Zoom;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -70,6 +83,8 @@ protected:
 
 	void SetDashFalse();
 
+	void ZoomIn();
+	void ZoomOut();
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -3,7 +3,6 @@
 #include "Public/Weapons/Base_Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
 
-// Sets default values
 ABase_Weapon::ABase_Weapon()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -16,6 +15,8 @@ ABase_Weapon::ABase_Weapon()
 	mesh->SetupAttachment(RootComponent);
 	mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	
+//  Setting default values
+	weaponType = WeaponType::None;
 }
 
 // Called when the game starts or when spawned

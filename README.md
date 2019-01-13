@@ -28,3 +28,4 @@ with a low poly art style.
 * Added Knockback
 * Imported bow mesh and created weapon class
 * Bow class and ranger class created
+* Imported new bow and Added zoom

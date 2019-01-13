@@ -8,6 +8,13 @@
 
 class USkeletalMeshComponent;
 
+enum WeaponType
+{
+	Melee,
+	Ranged,
+	None
+};
+
 UCLASS()
 class A_CURE_API ABase_Weapon : public AActor
 {
@@ -22,6 +29,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USkeletalMeshComponent *mesh;
+
+	WeaponType weaponType;
 
 protected:
 	// Called when the game starts or when spawned
