@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
 #include "TimerManager.h"
+#include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
 ABase_Class_Character::ABase_Class_Character()
@@ -23,6 +24,9 @@ ABase_Class_Character::ABase_Class_Character()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FP Camera"));
 	Camera->SetupAttachment(RootComponent);
 	Camera->bUsePawnControlRotation = true;
+
+	Arms = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Arms"));
+	Arms->SetupAttachment(Camera);
 
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats"));
 
@@ -83,6 +87,7 @@ void ABase_Class_Character::Dash()
 	{
 		FVector LaunchVelocity = GetVelocity();
 		LaunchVelocity.Z = 0;
+		LaunchVelocity.Normalize();
 		LaunchVelocity *= DashSpeed;
 
 		LaunchCharacter(LaunchVelocity, false, false);

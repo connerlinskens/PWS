@@ -22,28 +22,24 @@ public:
 	ABase_AIController();
 
 	virtual void Tick(float DeltaTime) override;
+
+
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
 protected:
 	virtual void BeginPlay() override;
 
 	void MoveToPlayer();
 
 	void AttackPlayer();
-
-	void ResetAttack();
 	
 protected:
 	ACharacter *player;
 
 	ABase_Enemy *ownCharacter;
 
-	TArray<AActor*> OverlappingActors;
-
-	TArray<AActor*> AttackingActors;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	TSubclassOf<AActor> CharacterClass;
-
-	FTimerHandle AttackTimerHandle;
 
 	bool Attacked;
 };

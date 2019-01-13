@@ -25,3 +25,4 @@ with a low poly art style.
 * Dash Delay Added
 * Upgraded Enemy code
 * Enemies base attack added
+* Added Knockback

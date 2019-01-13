@@ -11,9 +11,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "Public/Stats_Component.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ABase_AIController::ABase_AIController()
 {
+	// Defaults
 	player = nullptr;
 	Attacked = false;
 }
@@ -30,23 +32,8 @@ void ABase_AIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// first we move to the player
 	MoveToPlayer();
 
-	// Get all overlaping actors in the attach sphere
-	ownCharacter->GetAttackSphere()->GetOverlappingActors(OverlappingActors, CharacterClass);
-
-	for (int x = 0; x < OverlappingActors.Num(); x++)
-	{
-		// Check if one of the overlapping actors is the player
-		if (Cast<ABase_Class_Character>(OverlappingActors[x]))
-		{
-			StopMovement();
-			
-
-			AttackPlayer();
-		}
-	}
 }
 
 void ABase_AIController::MoveToPlayer()
@@ -56,25 +43,29 @@ void ABase_AIController::MoveToPlayer()
 
 void ABase_AIController::AttackPlayer()
 {
-	if (!Attacked)
-	{
-		ownCharacter->GetAttackBox()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-		ownCharacter->GetAttackBox()->GetOverlappingActors(AttackingActors, CharacterClass);
+	UE_LOG(LogTemp, Warning, TEXT("Attack!"));
 
-		for (int x = 0; x < AttackingActors.Num(); x++)
-		{
-			if (Cast<ABase_Class_Character>(AttackingActors[x]))
-			{
-				Attacked = true;
-				UGameplayStatics::ApplyDamage(player, ownCharacter->GetStats()->GetAttackDamage(), GetInstigatorController(), this, ownCharacter->GetDamageType());
-				GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, this, &ABase_AIController::ResetAttack, ownCharacter->GetAttackSpeed(), false);
-			}
-		}
-		UE_LOG(LogTemp, Warning, TEXT("Attack!"));
-	}
+	StopMovement();
+
+	// Getting the rotation between the enemy and the player
+	FRotator rot = UKismetMathLibrary::FindLookAtRotation(ownCharacter->GetActorLocation(), player->GetActorLocation());
+
+	// Turning The rotation into vector and add the knockback variable
+	FVector Direction = rot.Vector();
+	Direction.Normalize();
+	Direction *= ownCharacter->GetStats()->GetKnockBack();
+
+	// Doing damage and giving knockback
+	UGameplayStatics::ApplyDamage(player, ownCharacter->GetStats()->GetAttackDamage(), GetInstigatorController(), this, ownCharacter->GetDamageType());
+	player->LaunchCharacter(Direction, true, true);
+
 }
 
-void ABase_AIController::ResetAttack()
+void ABase_AIController::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	Attacked = false;
+	UE_LOG(LogTemp, Warning, TEXT("Overlapped with: %s"), *OtherActor->GetName());
+	if (OtherActor == player)
+	{
+		AttackPlayer();
+	}
 }

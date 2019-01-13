@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Public/Stats_Component.h"
+#include "Public/Enemies/Base_AIController.h"
 
 // Sets default values
 ABase_Enemy::ABase_Enemy()
@@ -17,35 +18,24 @@ ABase_Enemy::ABase_Enemy()
 	collider = GetCapsuleComponent();
 	MovementComp = GetCharacterMovement();
 	MovementSpeed = 250.0f;
-	AttackRange = 150.f;
-	AttackSpeed = 2.0f;
 
 	// Setting op the hitbox
 	hitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
 	hitCollider->SetupAttachment(RootComponent);
 
-	AttackSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Attack Range"));
-	AttackSphere->SetupAttachment(RootComponent);
-	AttackSphere->SetSphereRadius(AttackRange);
-
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats Component"));
 
-	AttackBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Attack box"));
-	AttackBox->SetupAttachment(RootComponent);
-	AttackBox->InitBoxExtent(FVector(70.f));
-	AttackBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
 	// Let the pawn get auto possessed by an AI controller
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+
 }
 
 // Getters
-USphereComponent *ABase_Enemy::GetAttackSphere() { return AttackSphere; }
-float ABase_Enemy::GetAttackSpeed() { return AttackSpeed; }
-UBoxComponent *ABase_Enemy::GetAttackBox() { return AttackBox; }
 UStats_Component *ABase_Enemy::GetStats() { return Stats; }
 TSubclassOf<UDamageType> ABase_Enemy::GetDamageType() { return NormalDamageType; }
+UBoxComponent *ABase_Enemy::GetHitCollider() { return hitCollider; }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()
@@ -53,6 +43,7 @@ void ABase_Enemy::BeginPlay()
 	Super::BeginPlay();
 	
 	Stats->OnDamageTaken.AddDynamic(this, &ABase_Enemy::OnDamageTaken);
+	hitCollider->OnComponentBeginOverlap.AddDynamic(this, &ABase_Enemy::OnActorOverlap);
 
 	MovementComp->MaxWalkSpeed = MovementSpeed;
 }
@@ -71,4 +62,9 @@ void ABase_Enemy::OnDamageTaken(UStats_Component* OwningStatsComp, float Health,
 		// Die!
 		UE_LOG(LogTemp, Warning, TEXT("Die!"));
 	}
+}
+
+void ABase_Enemy::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	Cast<ABase_AIController>(GetController())->OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 }

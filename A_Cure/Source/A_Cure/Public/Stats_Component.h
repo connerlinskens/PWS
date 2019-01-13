@@ -27,6 +27,7 @@ public:
 	float GetArmor();
 	float GetAttackDamage();
 	float GetAbilityDamage();
+	FVector GetKnockBack();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Stats")
@@ -40,6 +41,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float AbilityDamage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	FVector KnockBack;
 
 	float CurrentHealth;
 

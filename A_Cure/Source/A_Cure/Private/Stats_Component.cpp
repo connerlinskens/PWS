@@ -13,6 +13,7 @@ UStats_Component::UStats_Component()
 	Armor = 10.f;
 	AttackDamage = 20.f;
 	AbilityDamage = 40.f;
+	KnockBack = FVector(2000.f);
 }
 
 // Getters
@@ -21,6 +22,7 @@ float UStats_Component::GetMaxHealth() { return MaxHealth; }
 float UStats_Component::GetArmor() { return Armor; }
 float UStats_Component::GetAttackDamage() { return AttackDamage; }
 float UStats_Component::GetAbilityDamage() { return AbilityDamage; }
+FVector UStats_Component::GetKnockBack() { return KnockBack; }
 
 
 

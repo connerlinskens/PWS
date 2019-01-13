@@ -27,24 +27,12 @@ protected:
 	UBoxComponent *hitCollider;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USphereComponent *AttackSphere;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attack")
-	float AttackRange;
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStats_Component *Stats;
 
 	UCapsuleComponent *collider;
 	UCharacterMovementComponent *MovementComp;
 
 	float MovementSpeed;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attack")
-	float AttackSpeed;
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UBoxComponent *AttackBox;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	TSubclassOf<UDamageType> NormalDamageType;
@@ -53,15 +41,16 @@ private:
 	UFUNCTION()
 	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+	UFUNCTION()
+	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Getters
-	USphereComponent *GetAttackSphere();
-	float GetAttackSpeed();
-	UBoxComponent *GetAttackBox();
 	UStats_Component *GetStats();
 	TSubclassOf<UDamageType> GetDamageType();
+	UBoxComponent* GetHitCollider();
 
 };

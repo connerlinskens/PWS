@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class UStats_Component;
+class USkeletalMeshComponent;
 
 UCLASS()
 class A_CURE_API ABase_Class_Character : public ACharacter
@@ -22,6 +23,9 @@ public:
 	UStats_Component *GetStats();
 
 protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	USkeletalMeshComponent *Arms;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UCameraComponent *Camera;
 
