@@ -31,9 +31,6 @@ ABase_Class_Character::ABase_Class_Character()
 
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats"));
 
-	//WeaponPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Point"));
-	//WeaponPoint->SetupAttachment(RootComponent);
-
 	// Defaults
 	DashSpeed = 200.f;
 	Dashed = false;
@@ -77,7 +74,6 @@ void ABase_Class_Character::BeginPlay()
 		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		FAttachmentTransformRules attachRules(EAttachmentRule::SnapToTarget, false);
 		Weapon = GetWorld()->SpawnActor<ABase_Weapon>(ClassWeapon, spawnParams);
-		//Weapon->AttachToComponent(WeaponPoint, attachRules);
 		Weapon->AttachToComponent(Arms, attachRules, WeaponSocketName);
 		
 	}

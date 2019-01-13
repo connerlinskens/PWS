@@ -29,3 +29,4 @@ with a low poly art style.
 * Imported bow mesh and created weapon class
 * Bow class and ranger class created
 * Imported new bow and Added zoom
+* Spider class created

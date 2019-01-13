@@ -62,9 +62,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float ZoomSpeed;
 
-	//UPROPERTY(VisibelAnywhere, Category = "Components")
-	//USceneComponent *WeaponPoint;
-
 	bool Zoom;
 
 protected:
