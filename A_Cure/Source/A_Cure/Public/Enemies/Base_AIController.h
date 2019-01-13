@@ -38,6 +38,8 @@ protected:
 
 	ABase_Enemy *ownCharacter;
 
+	TArray<AActor*> OverlappingActors;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	TSubclassOf<AActor> CharacterClass;
 

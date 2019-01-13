@@ -14,6 +14,7 @@ UStats_Component::UStats_Component()
 	AttackDamage = 20.f;
 	AbilityDamage = 40.f;
 	KnockBack = FVector(2000.f);
+	Speed = 400.f;
 }
 
 // Getters
@@ -23,7 +24,7 @@ float UStats_Component::GetArmor() { return Armor; }
 float UStats_Component::GetAttackDamage() { return AttackDamage; }
 float UStats_Component::GetAbilityDamage() { return AbilityDamage; }
 FVector UStats_Component::GetKnockBack() { return KnockBack; }
-
+float UStats_Component::GetSpeed() { return Speed; }
 
 
 // Called when the game starts

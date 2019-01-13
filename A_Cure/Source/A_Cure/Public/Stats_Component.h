@@ -28,6 +28,7 @@ public:
 	float GetAttackDamage();
 	float GetAbilityDamage();
 	FVector GetKnockBack();
+	float GetSpeed();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Stats")
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	FVector KnockBack;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	float Speed;
 
 	float CurrentHealth;
 

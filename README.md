@@ -30,3 +30,4 @@ with a low poly art style.
 * Bow class and ranger class created
 * Imported new bow and Added zoom
 * Spider class created
+* Different spiders created

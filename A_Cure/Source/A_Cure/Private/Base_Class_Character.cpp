@@ -79,6 +79,7 @@ void ABase_Class_Character::BeginPlay()
 	}
 
 	NormalPOV = Camera->FieldOfView;
+	GetCharacterMovement()->MaxWalkSpeed = Stats->GetSpeed();
 }
 
 // Called every frame

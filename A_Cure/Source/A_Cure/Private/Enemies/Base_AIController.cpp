@@ -32,7 +32,19 @@ void ABase_AIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	MoveToPlayer();
+	ownCharacter->GetDetectionSphere()->GetOverlappingActors(OverlappingActors, CharacterClass);
+
+	for (int x = 0; x < OverlappingActors.Num(); x++)
+	{
+		if (Cast<ABase_Class_Character>(OverlappingActors[x]))
+		{
+			MoveToPlayer();
+		}
+		else
+		{
+			StopMovement();
+		}
+	}
 
 }
 
@@ -43,8 +55,6 @@ void ABase_AIController::MoveToPlayer()
 
 void ABase_AIController::AttackPlayer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attack!"));
-
 	StopMovement();
 
 	// Getting the rotation between the enemy and the player
@@ -63,7 +73,6 @@ void ABase_AIController::AttackPlayer()
 
 void ABase_AIController::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Overlapped with: %s"), *OtherActor->GetName());
 	if (OtherActor == player)
 	{
 		AttackPlayer();

@@ -17,7 +17,7 @@ ABase_Enemy::ABase_Enemy()
 	// Setting the defaults values of the variables
 	collider = GetCapsuleComponent();
 	MovementComp = GetCharacterMovement();
-	MovementSpeed = 250.0f;
+	DetectionRange = 1000.f;
 
 	// Setting op the hitbox
 	hitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
@@ -25,17 +25,19 @@ ABase_Enemy::ABase_Enemy()
 
 	Stats = CreateDefaultSubobject<UStats_Component>(TEXT("Stats Component"));
 
+	DetectionRadius = CreateDefaultSubobject<USphereComponent>(TEXT("Detection Radius"));
+	DetectionRadius->SetupAttachment(RootComponent);
+	DetectionRadius->SetSphereRadius(DetectionRange);
 
 	// Let the pawn get auto possessed by an AI controller
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-
 }
 
 // Getters
 UStats_Component *ABase_Enemy::GetStats() { return Stats; }
 TSubclassOf<UDamageType> ABase_Enemy::GetDamageType() { return NormalDamageType; }
 UBoxComponent *ABase_Enemy::GetHitCollider() { return hitCollider; }
+USphereComponent *ABase_Enemy::GetDetectionSphere() { return DetectionRadius; }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()
@@ -45,7 +47,7 @@ void ABase_Enemy::BeginPlay()
 	Stats->OnDamageTaken.AddDynamic(this, &ABase_Enemy::OnDamageTaken);
 	hitCollider->OnComponentBeginOverlap.AddDynamic(this, &ABase_Enemy::OnActorOverlap);
 
-	MovementComp->MaxWalkSpeed = MovementSpeed;
+	MovementComp->MaxWalkSpeed = Stats->GetSpeed();
 }
 
 // Called every frame

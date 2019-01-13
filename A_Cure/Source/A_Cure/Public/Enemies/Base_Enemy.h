@@ -32,10 +32,14 @@ protected:
 	UCapsuleComponent *collider;
 	UCharacterMovementComponent *MovementComp;
 
-	float MovementSpeed;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	TSubclassOf<UDamageType> NormalDamageType;
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent *DetectionRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	float DetectionRange;
 
 private:
 	UFUNCTION()
@@ -52,5 +56,6 @@ public:
 	UStats_Component *GetStats();
 	TSubclassOf<UDamageType> GetDamageType();
 	UBoxComponent* GetHitCollider();
+	USphereComponent* GetDetectionSphere();
 
 };
