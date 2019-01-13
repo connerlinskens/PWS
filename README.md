@@ -27,3 +27,4 @@ with a low poly art style.
 * Enemies base attack added
 * Added Knockback
 * Imported bow mesh and created weapon class
+* Bow class and ranger class created

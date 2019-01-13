@@ -9,6 +9,7 @@
 class UCameraComponent;
 class UStats_Component;
 class USkeletalMeshComponent;
+class ABase_Weapon;
 
 UCLASS()
 class A_CURE_API ABase_Class_Character : public ACharacter
@@ -44,6 +45,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 	float DashDelay;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ABase_Weapon> ClassWeapon;
+
+	ABase_Weapon *Weapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName WeaponSocketName;
 
 protected:
 	// Called when the game starts or when spawned
