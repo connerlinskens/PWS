@@ -57,5 +57,6 @@ public:
 	TSubclassOf<UDamageType> GetDamageType();
 	UBoxComponent* GetHitCollider();
 	USphereComponent* GetDetectionSphere();
+	USkeletalMeshComponent *GetEnemyMesh();
 
 };

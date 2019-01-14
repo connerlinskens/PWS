@@ -38,6 +38,7 @@ UStats_Component *ABase_Enemy::GetStats() { return Stats; }
 TSubclassOf<UDamageType> ABase_Enemy::GetDamageType() { return NormalDamageType; }
 UBoxComponent *ABase_Enemy::GetHitCollider() { return hitCollider; }
 USphereComponent *ABase_Enemy::GetDetectionSphere() { return DetectionRadius; }
+USkeletalMeshComponent *ABase_Enemy::GetEnemyMesh() { return GetMesh(); }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()
@@ -63,6 +64,8 @@ void ABase_Enemy::OnDamageTaken(UStats_Component* OwningStatsComp, float Health,
 	{
 		// Die!
 		UE_LOG(LogTemp, Warning, TEXT("Die!"));
+		GetController()->Destroy();
+		this->Destroy();
 	}
 }
 

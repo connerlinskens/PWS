@@ -7,6 +7,7 @@
 #include "Base_Weapon.generated.h"
 
 class USkeletalMeshComponent;
+class ABase_Class_Character;
 
 enum WeaponType
 {
@@ -32,12 +33,19 @@ public:
 
 	WeaponType weaponType;
 
+	void SetmyOwner(ABase_Class_Character *Owner);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+protected:
+	ABase_Class_Character *myOwner;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void Attack();
 
 };

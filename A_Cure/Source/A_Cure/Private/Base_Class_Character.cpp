@@ -50,16 +50,21 @@ void ABase_Class_Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABase_Class_Character::Dash);
 
 	PlayerInputComponent->BindAction("DamageTest", IE_Pressed, this, &ABase_Class_Character::Damage);
 
 	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ABase_Class_Character::ZoomIn);
 	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ABase_Class_Character::ZoomOut);
+
+	PlayerInputComponent->BindAction("UseWeapon", IE_Pressed, this, &ABase_Class_Character::UseWeapon);
 }
 
 // Getters ans Setters
 UStats_Component *ABase_Class_Character::GetStats() { return Stats; }
+UCameraComponent *ABase_Class_Character::GetFPCamera() { return Camera; }
 
 // Called when the game starts or when spawned
 void ABase_Class_Character::BeginPlay()
@@ -75,7 +80,7 @@ void ABase_Class_Character::BeginPlay()
 		FAttachmentTransformRules attachRules(EAttachmentRule::SnapToTarget, false);
 		Weapon = GetWorld()->SpawnActor<ABase_Weapon>(ClassWeapon, spawnParams);
 		Weapon->AttachToComponent(Arms, attachRules, WeaponSocketName);
-		
+		Weapon->SetmyOwner(this);
 	}
 
 	NormalPOV = Camera->FieldOfView;
@@ -151,4 +156,13 @@ void ABase_Class_Character::ZoomIn()
 void ABase_Class_Character::ZoomOut()
 {
 	Zoom = false;
+}
+
+void ABase_Class_Character::UseWeapon()
+{
+	Weapon->Attack();
+	if (Weapon->weaponType == WeaponType::Ranged)
+	{
+		ZoomIn();
+	}
 }

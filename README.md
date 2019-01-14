@@ -31,3 +31,4 @@ with a low poly art style.
 * Imported new bow and Added zoom
 * Spider class created
 * Different spiders created
+* Arrows implemented

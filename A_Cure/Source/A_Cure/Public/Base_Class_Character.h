@@ -20,8 +20,6 @@ public:
 	// Sets default values for this character's properties
 	ABase_Class_Character();
 
-	UFUNCTION(BlueprintCallable, Category = "Stats")
-	UStats_Component *GetStats();
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -82,11 +80,18 @@ protected:
 
 	void ZoomIn();
 	void ZoomOut();
+
+	void UseWeapon();
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	UStats_Component *GetStats();
+
+	UCameraComponent *GetFPCamera();
 };
 

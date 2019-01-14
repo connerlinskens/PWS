@@ -29,6 +29,7 @@ public:
 	float GetAbilityDamage();
 	FVector GetKnockBack();
 	float GetSpeed();
+	TSubclassOf<UDamageType> GetDamageType();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Stats")
@@ -54,6 +55,8 @@ protected:
 	UFUNCTION()
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	TSubclassOf<UDamageType> DamageType;
 
 protected:
 	// Called when the game starts

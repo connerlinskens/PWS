@@ -25,6 +25,7 @@ float UStats_Component::GetAttackDamage() { return AttackDamage; }
 float UStats_Component::GetAbilityDamage() { return AbilityDamage; }
 FVector UStats_Component::GetKnockBack() { return KnockBack; }
 float UStats_Component::GetSpeed() { return Speed; }
+TSubclassOf<UDamageType> UStats_Component::GetDamageType() { return DamageType; }
 
 
 // Called when the game starts

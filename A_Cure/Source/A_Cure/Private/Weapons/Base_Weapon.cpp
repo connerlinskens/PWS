@@ -2,6 +2,7 @@
 
 #include "Public/Weapons/Base_Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Public/Base_Class_Character.h"
 
 ABase_Weapon::ABase_Weapon()
 {
@@ -19,6 +20,12 @@ ABase_Weapon::ABase_Weapon()
 	weaponType = WeaponType::None;
 }
 
+void ABase_Weapon::SetmyOwner(ABase_Class_Character *Owner)
+{
+	myOwner = Owner;
+}
+
+
 // Called when the game starts or when spawned
 void ABase_Weapon::BeginPlay()
 {
@@ -31,5 +38,10 @@ void ABase_Weapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABase_Weapon::Attack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Fire Attack"));
 }
 

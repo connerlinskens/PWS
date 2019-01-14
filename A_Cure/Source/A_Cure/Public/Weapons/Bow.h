@@ -6,6 +6,7 @@
 #include "Weapons/Base_Weapon.h"
 #include "Bow.generated.h"
 
+class AArrow;
 /**
  * 
  */
@@ -17,6 +18,26 @@ class A_CURE_API ABow : public ABase_Weapon
 public:
 	ABow();
 
+	virtual void Attack() override;
+
+	void ReleaseArrow();
+
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	TSubclassOf<AActor> ArrowClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	USceneComponent *ArrowSpawnPoint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	FName ArrowSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	float ArrowSpeed;
+
+	AArrow *SpawnedArrow;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	float LineTraceRange;
 
 };

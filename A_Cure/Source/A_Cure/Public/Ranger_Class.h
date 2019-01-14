@@ -6,6 +6,8 @@
 #include "Base_Class_Character.h"
 #include "Ranger_Class.generated.h"
 
+class ABow;
+
 /**
  * 
  */
@@ -17,6 +19,13 @@ class A_CURE_API ARanger_Class : public ABase_Class_Character
 public:
 	ARanger_Class();
 
-protected:
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+	virtual void BeginPlay() override;
+
+	void ReleaseArrow();
+
+	ABow *myBow;
 };
