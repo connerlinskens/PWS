@@ -9,6 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Public/Ranger_Class.h"
 #include "Public/Stats_Component.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
 
 // Sets default values
 AArrow::AArrow()
@@ -84,6 +86,8 @@ void AArrow::FreezeArrow(UPrimitiveComponent* OverlappedComponent, AActor* Other
 			ArrowBase->SetEnableGravity(false);
 			HitBox->SetEnableGravity(false);
 
+			CurrentEnemy->ChildActors.Add(this);
+
 			UGameplayStatics::ApplyDamage(CurrentEnemy, myOwner->GetStats()->GetAttackDamage(), GetInstigatorController(), myOwner, myOwner->GetStats()->GetDamageType());
 		}
 	}
@@ -97,5 +101,12 @@ void AArrow::FreezeArrow(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		this->AttachToActor(OtherActor, FAttachmentTransformRules::KeepWorldTransform);
 		ArrowBase->SetEnableGravity(false);
 		HitBox->SetEnableGravity(false);
+
+		GetWorld()->GetTimerManager().SetTimer(destructTimer, this, &AArrow::DestroyArrow, 5.f, false);
 	}
+}
+
+void AArrow::DestroyArrow()
+{
+	Destroy();
 }

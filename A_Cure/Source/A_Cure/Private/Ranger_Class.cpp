@@ -26,6 +26,9 @@ void ARanger_Class::BeginPlay()
 
 void ARanger_Class::ReleaseArrow()
 {
-	myBow->ReleaseArrow();
-	ZoomOut();
+	if (myBow)
+	{
+		myBow->ReleaseArrow();
+		ZoomOut();
+	}
 }

@@ -38,10 +38,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "noice")
 	float GravityStrength;
 
+	ABase_Class_Character *myOwner;
+
+	FTimerHandle destructTimer;
+
+protected:
 	UFUNCTION()
 	void FreezeArrow(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
-	ABase_Class_Character *myOwner;
+	void DestroyArrow();
+
 
 protected:
 	// Called when the game starts or when spawned

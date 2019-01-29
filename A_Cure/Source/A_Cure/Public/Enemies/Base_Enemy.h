@@ -41,12 +41,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float DetectionRange;
 
+
 private:
 	UFUNCTION()
 	void OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	UFUNCTION()
 	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+public:
+	// Array to store the arrows that have hit this enemy
+	TArray<AActor*> ChildActors;
 
 public:	
 	// Called every frame

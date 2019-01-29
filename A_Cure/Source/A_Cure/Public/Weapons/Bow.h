@@ -18,6 +18,8 @@ class A_CURE_API ABow : public ABase_Weapon
 public:
 	ABow();
 
+	virtual void Tick(float DeltaTime) override;
+
 	virtual void Attack() override;
 
 	void ReleaseArrow();
@@ -33,11 +35,17 @@ protected:
 	FName ArrowSocketName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
-	float ArrowSpeed;
+	float MaxArrowSpeed;
 
 	AArrow *SpawnedArrow;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
 	float LineTraceRange;
 
+	bool tensioningBow;
+
+	float ArrowSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	float ArrowTractionSpeed;
 };

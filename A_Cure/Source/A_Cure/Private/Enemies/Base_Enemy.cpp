@@ -63,7 +63,11 @@ void ABase_Enemy::OnDamageTaken(UStats_Component* OwningStatsComp, float Health,
 	if (Health <= 0.f)
 	{
 		// Die!
-		UE_LOG(LogTemp, Warning, TEXT("Die!"));
+		for (AActor *A : ChildActors)
+		{
+			A->Destroy();
+		}
+
 		GetController()->Destroy();
 		this->Destroy();
 	}

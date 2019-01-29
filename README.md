@@ -32,3 +32,4 @@ with a low poly art style.
 * Spider class created
 * Different spiders created
 * Arrows implemented
+* Arrows now disappear

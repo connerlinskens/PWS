@@ -160,9 +160,12 @@ void ABase_Class_Character::ZoomOut()
 
 void ABase_Class_Character::UseWeapon()
 {
-	Weapon->Attack();
-	if (Weapon->weaponType == WeaponType::Ranged)
+	if (Weapon)
 	{
-		ZoomIn();
+		Weapon->Attack();
+		if (Weapon->weaponType == WeaponType::Ranged)
+		{
+			ZoomIn();
+		}
 	}
 }

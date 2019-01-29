@@ -19,10 +19,31 @@ ABow::ABow()
 
 	// Defaults
 	LineTraceRange = 1000.f;
+	tensioningBow = false;
+	ArrowSpeed = 0.f;
+	MaxArrowSpeed = 5000.f;
+	ArrowTractionSpeed = 1.2f;
+}
+
+void ABow::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (tensioningBow)
+	{
+		ArrowSpeed += DeltaTime * MaxArrowSpeed * ArrowTractionSpeed;
+		if (ArrowSpeed >= 4500)
+		{
+			ArrowSpeed = 4500;
+		}
+		UE_LOG(LogTemp, Warning, TEXT("ArrowSpeed: %f"), ArrowSpeed)
+	}
 }
 
 void ABow::Attack()
 {
+	tensioningBow = true;
+
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	myOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
@@ -38,7 +59,6 @@ void ABow::Attack()
 	QueryParams.bTraceComplex = true;
 
 	GetWorld()->LineTraceSingleByChannel(hit, EyeLocation, TraceEnd, ECollisionChannel::ECC_Pawn, QueryParams);
-	DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, true);
 	
 	FRotator ArrowRot;
 
@@ -64,4 +84,6 @@ void ABow::ReleaseArrow()
 {
 	SpawnedArrow->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	SpawnedArrow->Launch(ArrowSpeed);
+	tensioningBow = false;
+	ArrowSpeed = 0.f;
 }
