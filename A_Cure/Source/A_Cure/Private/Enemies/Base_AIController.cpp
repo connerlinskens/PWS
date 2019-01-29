@@ -12,12 +12,14 @@
 #include "Components/BoxComponent.h"
 #include "Public/Stats_Component.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TimerManager.h"
 
 ABase_AIController::ABase_AIController()
 {
 	// Defaults
 	player = nullptr;
 	Attacked = false;
+	bRecovering = false;
 }
 
 void ABase_AIController::BeginPlay()
@@ -46,11 +48,23 @@ void ABase_AIController::Tick(float DeltaTime)
 		}
 	}
 
+	if (ownCharacter->GetStunned() && !bRecovering)
+	{
+		bRecovering = true;
+		GetWorld()->GetTimerManager().SetTimer(recoverTimerHandle, this, &ABase_AIController::RecoverFromStun, ownCharacter->GetStats()->GetRecoverRate(), false);
+	}
 }
 
 void ABase_AIController::MoveToPlayer()
 {
-	MoveToActor(player, 1.f);
+	if (!ownCharacter->GetStunned())
+	{
+		MoveToActor(player, 1.f);
+	}
+	else
+	{
+		StopMovement();
+	}
 }
 
 void ABase_AIController::AttackPlayer()
@@ -60,7 +74,7 @@ void ABase_AIController::AttackPlayer()
 	// Getting the rotation between the enemy and the player
 	FRotator rot = UKismetMathLibrary::FindLookAtRotation(ownCharacter->GetActorLocation(), player->GetActorLocation());
 
-	// Turning The rotation into vector and add the knockback variable
+	// Turning The rotation into a direction and add the knockback variable
 	FVector Direction = rot.Vector();
 	Direction.Normalize();
 	Direction *= ownCharacter->GetStats()->GetKnockBack();
@@ -77,4 +91,10 @@ void ABase_AIController::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	{
 		AttackPlayer();
 	}
+}
+
+void ABase_AIController::RecoverFromStun()
+{
+	bRecovering = false;
+	ownCharacter->SetStunned(false);
 }

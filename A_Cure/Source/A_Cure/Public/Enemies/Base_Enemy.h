@@ -41,6 +41,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float DetectionRange;
 
+	bool bStunned;
 
 private:
 	UFUNCTION()
@@ -57,11 +58,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Getters
+	// Getters and setters
 	UStats_Component *GetStats();
 	TSubclassOf<UDamageType> GetDamageType();
 	UBoxComponent* GetHitCollider();
 	USphereComponent* GetDetectionSphere();
 	USkeletalMeshComponent *GetEnemyMesh();
+	bool GetStunned();
+	void SetStunned(bool newValue);
+
 
 };

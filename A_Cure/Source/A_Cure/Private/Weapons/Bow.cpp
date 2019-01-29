@@ -8,6 +8,8 @@
 #include "Camera/CameraComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TimerManager.h"
+#include "Public/Stats_Component.h"
 
 ABow::ABow()
 {
@@ -23,6 +25,13 @@ ABow::ABow()
 	ArrowSpeed = 0.f;
 	MaxArrowSpeed = 5000.f;
 	ArrowTractionSpeed = 1.2f;
+	bCanFire = true;
+}
+
+void ABow::BeginPlay()
+{
+	Super::BeginPlay();
+
 }
 
 void ABow::Tick(float DeltaTime)
@@ -42,42 +51,43 @@ void ABow::Tick(float DeltaTime)
 
 void ABow::Attack()
 {
-	tensioningBow = true;
-
-	FVector EyeLocation;
-	FRotator EyeRotation;
-	myOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-
-	FVector ShootDirection = EyeRotation.Vector();
-
-	FVector TraceEnd = EyeLocation + (ShootDirection * LineTraceRange);
-
-	FHitResult hit;
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(myOwner);
-	QueryParams.AddIgnoredActor(this);
-	QueryParams.bTraceComplex = true;
-
-	GetWorld()->LineTraceSingleByChannel(hit, EyeLocation, TraceEnd, ECollisionChannel::ECC_Pawn, QueryParams);
-	
-	FRotator ArrowRot;
-
-	if (hit.GetActor())
+	if (bCanFire)
 	{
-		FRotator ArrowRot = UKismetMathLibrary::FindLookAtRotation(EyeLocation, hit.ImpactPoint);
-	}
+		bCanFire = false;
+		tensioningBow = true;
 
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		FVector EyeLocation;
+		FRotator EyeRotation;
+		myOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
-	SpawnedArrow = Cast<AArrow>(GetWorld()->SpawnActor<AActor>(ArrowClass, mesh->GetSocketLocation(ArrowSocketName), mesh->GetSocketRotation(ArrowSocketName), spawnParams));
+		FVector ShootDirection = EyeRotation.Vector();
+		FVector TraceEnd = EyeLocation + (ShootDirection * LineTraceRange);
 
-	SpawnedArrow->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+		FHitResult hit;
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(myOwner);
+		QueryParams.AddIgnoredActor(this);
+		QueryParams.bTraceComplex = true;
 
-	SpawnedArrow->SetActorRotation(ArrowRot);
-
-	SpawnedArrow->SetOwner(myOwner);
+		GetWorld()->LineTraceSingleByChannel(hit, EyeLocation, TraceEnd, ECollisionChannel::ECC_Pawn, QueryParams);
 	
+		FRotator ArrowRot;
+
+		if (hit.GetActor())
+		{
+			FRotator ArrowRot = UKismetMathLibrary::FindLookAtRotation(EyeLocation, hit.ImpactPoint);
+		}
+
+		FActorSpawnParameters spawnParams;
+		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		SpawnedArrow = Cast<AArrow>(GetWorld()->SpawnActor<AActor>(ArrowClass, mesh->GetSocketLocation(ArrowSocketName), mesh->GetSocketRotation(ArrowSocketName), spawnParams));
+		SpawnedArrow->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+		SpawnedArrow->SetActorRotation(ArrowRot);
+		SpawnedArrow->SetOwner(myOwner);
+
+		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandle, this, &ABow::Reload, myOwner->GetStats()->GetAttackRate(), false);
+	}
 }
 
 void ABow::ReleaseArrow()
@@ -86,4 +96,9 @@ void ABow::ReleaseArrow()
 	SpawnedArrow->Launch(ArrowSpeed);
 	tensioningBow = false;
 	ArrowSpeed = 0.f;
+}
+
+void ABow::Reload()
+{
+	bCanFire = true;
 }

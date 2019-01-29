@@ -31,6 +31,9 @@ ABase_Enemy::ABase_Enemy()
 
 	// Let the pawn get auto possessed by an AI controller
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	// Defaults
+	bStunned = false;
 }
 
 // Getters
@@ -39,6 +42,8 @@ TSubclassOf<UDamageType> ABase_Enemy::GetDamageType() { return NormalDamageType;
 UBoxComponent *ABase_Enemy::GetHitCollider() { return hitCollider; }
 USphereComponent *ABase_Enemy::GetDetectionSphere() { return DetectionRadius; }
 USkeletalMeshComponent *ABase_Enemy::GetEnemyMesh() { return GetMesh(); }
+bool ABase_Enemy::GetStunned() { return bStunned; }
+void ABase_Enemy::SetStunned(bool newValue) { bStunned = newValue; }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()

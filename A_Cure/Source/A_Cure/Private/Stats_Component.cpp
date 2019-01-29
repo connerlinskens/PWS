@@ -15,6 +15,8 @@ UStats_Component::UStats_Component()
 	AbilityDamage = 40.f;
 	KnockBack = FVector(2000.f);
 	Speed = 400.f;
+	AttackRate = 2.f;
+	RecoverRate = 1.f;
 }
 
 // Getters
@@ -26,6 +28,8 @@ float UStats_Component::GetAbilityDamage() { return AbilityDamage; }
 FVector UStats_Component::GetKnockBack() { return KnockBack; }
 float UStats_Component::GetSpeed() { return Speed; }
 TSubclassOf<UDamageType> UStats_Component::GetDamageType() { return DamageType; }
+float UStats_Component::GetAttackRate() { return AttackRate; }
+float UStats_Component::GetRecoverRate() { return RecoverRate; }
 
 
 // Called when the game starts

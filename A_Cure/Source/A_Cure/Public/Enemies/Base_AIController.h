@@ -33,6 +33,8 @@ protected:
 
 	void AttackPlayer();
 	
+	void RecoverFromStun();
+
 protected:
 	ACharacter *player;
 
@@ -44,4 +46,8 @@ protected:
 	TSubclassOf<AActor> CharacterClass;
 
 	bool Attacked;
+
+	bool bRecovering;
+
+	FTimerHandle recoverTimerHandle;
 };

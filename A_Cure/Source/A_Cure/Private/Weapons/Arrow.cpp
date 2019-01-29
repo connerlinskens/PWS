@@ -11,6 +11,8 @@
 #include "Public/Stats_Component.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AArrow::AArrow()
@@ -89,6 +91,15 @@ void AArrow::FreezeArrow(UPrimitiveComponent* OverlappedComponent, AActor* Other
 			CurrentEnemy->ChildActors.Add(this);
 
 			UGameplayStatics::ApplyDamage(CurrentEnemy, myOwner->GetStats()->GetAttackDamage(), GetInstigatorController(), myOwner, myOwner->GetStats()->GetDamageType());
+
+			FRotator rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentEnemy->GetActorLocation());
+
+			FVector Direction = rot.Vector();
+			Direction.Normalize();
+			Direction *= myOwner->GetStats()->GetKnockBack();
+
+			CurrentEnemy->SetStunned(true);
+			CurrentEnemy->LaunchCharacter(Direction, true, true);
 		}
 	}
 	else if (environment)

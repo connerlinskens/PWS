@@ -33,3 +33,4 @@ with a low poly art style.
 * Different spiders created
 * Arrows implemented
 * Arrows now disappear
+* Firerate, Knockback added

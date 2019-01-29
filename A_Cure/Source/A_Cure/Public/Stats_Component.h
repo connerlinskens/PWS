@@ -30,6 +30,8 @@ public:
 	FVector GetKnockBack();
 	float GetSpeed();
 	TSubclassOf<UDamageType> GetDamageType();
+	float GetAttackRate();
+	float GetRecoverRate();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Stats")
@@ -49,6 +51,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float Speed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	float AttackRate;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	float RecoverRate;
 
 	float CurrentHealth;
 

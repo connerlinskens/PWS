@@ -48,4 +48,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
 	float ArrowTractionSpeed;
+
+	bool bCanFire;
+
+	FTimerHandle reloadTimerHandle;
+
+protected:
+	void Reload();
+
+	virtual void BeginPlay() override;
 };
