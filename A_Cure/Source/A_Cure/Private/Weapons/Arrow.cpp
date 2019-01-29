@@ -96,6 +96,7 @@ void AArrow::FreezeArrow(UPrimitiveComponent* OverlappedComponent, AActor* Other
 
 			FVector Direction = rot.Vector();
 			Direction.Normalize();
+			Direction.Z = 1;
 			Direction *= myOwner->GetStats()->GetKnockBack();
 
 			CurrentEnemy->SetStunned(true);
