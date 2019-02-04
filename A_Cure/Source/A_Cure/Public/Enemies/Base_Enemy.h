@@ -42,6 +42,7 @@ protected:
 	float DetectionRange;
 
 	bool bStunned;
+	bool bBeingAttacked;
 
 private:
 	UFUNCTION()
@@ -66,6 +67,7 @@ public:
 	USkeletalMeshComponent *GetEnemyMesh();
 	bool GetStunned();
 	void SetStunned(bool newValue);
+	bool GetBeingAttacked();
 
 
 };

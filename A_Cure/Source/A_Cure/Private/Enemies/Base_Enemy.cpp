@@ -34,6 +34,7 @@ ABase_Enemy::ABase_Enemy()
 
 	// Defaults
 	bStunned = false;
+	bBeingAttacked = false;
 }
 
 // Getters
@@ -44,6 +45,7 @@ USphereComponent *ABase_Enemy::GetDetectionSphere() { return DetectionRadius; }
 USkeletalMeshComponent *ABase_Enemy::GetEnemyMesh() { return GetMesh(); }
 bool ABase_Enemy::GetStunned() { return bStunned; }
 void ABase_Enemy::SetStunned(bool newValue) { bStunned = newValue; }
+bool ABase_Enemy::GetBeingAttacked() { return bBeingAttacked; }
 
 // Called when the game starts or when spawned
 void ABase_Enemy::BeginPlay()
@@ -65,6 +67,11 @@ void ABase_Enemy::Tick(float DeltaTime)
 
 void ABase_Enemy::OnDamageTaken(UStats_Component* OwningStatsComp, float Health, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
+	if(bBeingAttacked == false)
+	{
+		bBeingAttacked = true;
+	}
+
 	if (Health <= 0.f)
 	{
 		// Die!

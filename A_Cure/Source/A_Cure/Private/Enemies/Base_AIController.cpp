@@ -48,6 +48,11 @@ void ABase_AIController::Tick(float DeltaTime)
 		}
 	}
 
+	if (ownCharacter->GetBeingAttacked())
+	{
+		MoveToPlayer();
+	}
+
 	if (ownCharacter->GetStunned() && !bRecovering)
 	{
 		bRecovering = true;

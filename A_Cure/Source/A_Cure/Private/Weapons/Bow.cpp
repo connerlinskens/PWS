@@ -10,6 +10,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
 #include "Public/Stats_Component.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABow::ABow()
 {
@@ -26,6 +28,8 @@ ABow::ABow()
 	MaxArrowSpeed = 5000.f;
 	ArrowTractionSpeed = 1.2f;
 	bCanFire = true;
+	FireShakeDelay = 1.5f;
+	TensoningBowSpeed = 150.f;
 }
 
 void ABow::BeginPlay()
@@ -45,8 +49,8 @@ void ABow::Tick(float DeltaTime)
 		{
 			ArrowSpeed = 4500;
 		}
-		UE_LOG(LogTemp, Warning, TEXT("ArrowSpeed: %f"), ArrowSpeed)
 	}
+
 }
 
 void ABow::Attack()
@@ -55,6 +59,10 @@ void ABow::Attack()
 	{
 		bCanFire = false;
 		tensioningBow = true;
+
+		DefaultMovementSpeed = myOwner->GetCharacterMovement()->MaxWalkSpeed;
+
+		myOwner->GetCharacterMovement()->MaxWalkSpeed = TensoningBowSpeed;
 
 		FVector EyeLocation;
 		FRotator EyeRotation;
@@ -87,6 +95,7 @@ void ABow::Attack()
 		SpawnedArrow->SetOwner(myOwner);
 
 		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandle, this, &ABow::Reload, myOwner->GetStats()->GetAttackRate(), false);
+		GetWorld()->GetTimerManager().SetTimer(FireShakeTimerHandle, this, &ABow::FireShake, 0.01f, true, FireShakeDelay);
 	}
 }
 
@@ -96,9 +105,22 @@ void ABow::ReleaseArrow()
 	SpawnedArrow->Launch(ArrowSpeed);
 	tensioningBow = false;
 	ArrowSpeed = 0.f;
+	myOwner->GetCharacterMovement()->MaxWalkSpeed = DefaultMovementSpeed;
 }
 
 void ABow::Reload()
 {
 	bCanFire = true;
+}
+
+void ABow::FireShake()
+{
+	if (myOwner && tensioningBow)
+	{
+		APlayerController *PC = Cast<APlayerController>(myOwner->GetController());
+		if (PC)
+		{
+			PC->ClientPlayCameraShake(FireCamShake);
+		}
+	}
 }

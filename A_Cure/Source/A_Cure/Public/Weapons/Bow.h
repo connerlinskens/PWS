@@ -7,6 +7,7 @@
 #include "Bow.generated.h"
 
 class AArrow;
+class UCameraShake;
 /**
  * 
  */
@@ -25,36 +26,51 @@ public:
 	void ReleaseArrow();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<AActor> ArrowClass;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USceneComponent *ArrowSpawnPoint;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName ArrowSocketName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float MaxArrowSpeed;
 
 	AArrow *SpawnedArrow;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float LineTraceRange;
 
 	bool tensioningBow;
 
 	float ArrowSpeed;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float ArrowTractionSpeed;
 
 	bool bCanFire;
 
 	FTimerHandle reloadTimerHandle;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<UCameraShake> FireCamShake;
+
+	FTimerHandle FireShakeTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float FireShakeDelay;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float TensoningBowSpeed;
+
+	float DefaultMovementSpeed;
+
 protected:
 	void Reload();
+
+	void FireShake();
 
 	virtual void BeginPlay() override;
 };
