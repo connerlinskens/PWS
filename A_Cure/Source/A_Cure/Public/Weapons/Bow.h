@@ -71,6 +71,4 @@ protected:
 	void Reload();
 
 	void FireShake();
-
-	virtual void BeginPlay() override;
 };

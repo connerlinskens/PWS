@@ -36,3 +36,4 @@ with a low poly art style.
 * Firerate, Knockback added
 * Fixed Arrow Knockback
 * Made Firing more fluent
+* Added Comments
